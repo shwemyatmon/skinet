@@ -11,6 +11,23 @@ namespace API.Extensions
                 c.SwaggerDoc("v1",new OpenApiInfo{
                     Title = "SkiNet API", Version = "v1"
                 });
+
+                var securitySechema = new OpenApiSecurityScheme{
+                    Description = "JWT Auth Bearer Scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                c.AddSecurityDefinition("Bearer",securitySechema);
+                var securityRequirement = new OpenApiSecurityRequirement {
+                    {securitySechema, new [] {"Bearer"}}
+                };
+                c.AddSecurityRequirement(securityRequirement);
             });
             return services;
         }
